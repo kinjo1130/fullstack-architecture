@@ -1,7 +1,10 @@
-import { Module } from '@nestjs/common';
-import { TodoResolver } from './todo.resolvers';
+import { Module } from "@nestjs/common";
+import { TodoController } from "./todo.controller";
+import { TodoService } from "./todo.service";
+import { PrismaService } from "src/common/prisma.service";
 
 @Module({
-  providers: [TodoResolver],
+  controllers: [TodoController],
+  providers: [TodoService],
 })
 export class TodoModule { }
