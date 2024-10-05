@@ -5,6 +5,13 @@ import * as fs from "fs";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // CORSの設定
+  // グローバルでCORSを有効にする
+  app.enableCors({
+    origin: "*", // Next.jsフロントエンドのURL
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle("Todos API")
     .setDescription("The Todos API description")
