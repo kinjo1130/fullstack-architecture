@@ -10,7 +10,12 @@ import type {
   Key,
   SWRConfiguration
 } from 'swr'
+import useSWRMutation from 'swr/mutation'
 import type {
+  SWRMutationConfiguration
+} from 'swr/mutation'
+import type {
+  CreateTodoDto,
   TodoDto
 } from '.././schemas'
 
@@ -67,6 +72,69 @@ export const useTodoControllerFindAll = <TError = Promise<unknown>>(
   const swrFn = () => todoControllerFindAll(fetchOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+/**
+ * @summary Todoを追加します
+ */
+export type todoControllerCreateResponse = {
+  data: TodoDto;
+  status: number;
+}
+
+export const getTodoControllerCreateUrl = () => {
+
+
+  return `http://localhost:3000/todos/create`
+}
+
+export const todoControllerCreate = async (createTodoDto: CreateTodoDto, options?: RequestInit): Promise<todoControllerCreateResponse> => {
+  
+  const res = await fetch(getTodoControllerCreateUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createTodoDto,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getTodoControllerCreateMutationFetcher = ( options?: RequestInit) => {
+  return (_: Key, { arg }: { arg: CreateTodoDto }): Promise<todoControllerCreateResponse> => {
+    return todoControllerCreate(arg, options);
+  }
+}
+export const getTodoControllerCreateMutationKey = () => [`http://localhost:3000/todos/create`] as const;
+
+export type TodoControllerCreateMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerCreate>>>
+export type TodoControllerCreateMutationError = Promise<unknown>
+
+/**
+ * @summary Todoを追加します
+ */
+export const useTodoControllerCreate = <TError = Promise<unknown>>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof todoControllerCreate>>, TError, Key, CreateTodoDto, Awaited<ReturnType<typeof todoControllerCreate>>> & { swrKey?: string }, fetch?: RequestInit}
+) => {
+
+  const {swr: swrOptions, fetch: fetchOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getTodoControllerCreateMutationKey();
+  const swrFn = getTodoControllerCreateMutationFetcher(fetchOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
   return {
     swrKey,

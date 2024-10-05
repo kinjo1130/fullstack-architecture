@@ -36,6 +36,38 @@
           "todos"
         ]
       }
+    },
+    "/todos/create": {
+      "post": {
+        "operationId": "TodoController_create",
+        "summary": "Todoを追加します",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTodoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Todoが追加されました",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "todos"
+        ]
+      }
     }
   },
   "info": {
@@ -85,6 +117,19 @@
           "completed",
           "createdAt",
           "updatedAt"
+        ]
+      },
+      "CreateTodoDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "NestJSの学習",
+            "description": "追加するTodoのタイトル"
+          }
+        },
+        "required": [
+          "title"
         ]
       }
     }

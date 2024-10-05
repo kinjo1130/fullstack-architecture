@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-
 export class TodoDto {
   @ApiProperty({
     example: "1",
@@ -27,4 +26,12 @@ export class TodoDto {
     description: "更新日",
   })
   updatedAt: Date;
+}
+
+export class CreateTodoDto {
+  @ApiProperty({
+    example: "NestJSの学習",
+    description: "追加するTodoのタイトル",
+  })
+  title: string;
 }

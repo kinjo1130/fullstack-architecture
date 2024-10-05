@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update:orval": "npx orval --config ./orval.config.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.3",

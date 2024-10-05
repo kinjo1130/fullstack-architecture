@@ -6,5 +6,7 @@
  * OpenAPI spec version: 0.1
  */
 
-export * from './createTodoDto';
-export * from './todoDto';
+export interface CreateTodoDto {
+  /** 追加するTodoのタイトル */
+  title: string;
+}

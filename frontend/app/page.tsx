@@ -1,36 +1,33 @@
 "use client";
-import { useTodoControllerFindAll, getTodoControllerFindAllKey } from "@/orval/todos/todos";
-import {getTodoControllerFindAllResponseMock} from "@/orval/todos/todos.msw";
+import { useTodoControllerFindAll, getTodoControllerFindAllKey, useTodoControllerCreate } from "@/orval/todos/todos";
 import { TodoDto } from "@/orval/schemas";
 import { useEffect, useState } from "react";
+import { useTodos } from "./hooks/useTodos";
 
 export default function Home() {
-  const {
-    data: todos,
-    error,
-    isLoading
-  } = useTodoControllerFindAll();
+  const { todos, isLoading, error, addTodo, isCreating } = useTodos();
 
   if (error) return <div>failed to load</div>;
   if (isLoading || !todos) return <div>loading...</div>;
 
-  // const [todos, setTodos] = useState<TodoDto[]>([]);
-
-  // useEffect(() => {
-  //   // クライアントサイドでのみモックデータを取得
-  //   setTodos(getTodoControllerFindAllResponseMock());
-  // }, []);
-
   return (
     <div>
       <h2>Todo app</h2>
-      <form>
+      <form onSubmit={
+        async (e) => {
+          e.preventDefault();
+          const title = (document.getElementById("todo") as HTMLInputElement).value;
+          addTodo(title);
+          // ここでフォームをクリアする
+          (document.getElementById("todo") as HTMLInputElement).value = "";
+        }
+      }>
         <label htmlFor="todo">Todoを追加する</label>
         <input type="text" placeholder="Add todo" id="todo" className="border" />
-        <button type="submit">Add</button>
+        <button type="submit" disabled={isCreating}>Add</button>
       </form>
       <ul>
-        {todos.data.map((todo: TodoDto) => (
+        {todos.map((todo: TodoDto) => (
           <li key={todo.id}>
             <input type="checkbox" />
             <span>{todo.title}</span>
