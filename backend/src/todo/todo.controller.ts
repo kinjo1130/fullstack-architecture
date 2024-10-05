@@ -6,7 +6,7 @@ import { TodoDto } from "./dto/todo";
 @ApiTags("todos")
 @Controller("todos")
 export class TodoController {
-  constructor(private readonly todoService: TodoService) { }
+  constructor(private readonly todoService: TodoService) {}
 
   @Get()
   @ApiOperation({ summary: "Todoの一覧が返ってきます" })

@@ -4,7 +4,7 @@ import { TodoDto } from "./dto/todo";
 
 @Injectable()
 export class TodoService {
-  constructor(private prismaService: PrismaService) { }
+  constructor(private prismaService: PrismaService) {}
   async getTodos(): Promise<TodoDto[]> {
     return this.prismaService.todo.findMany();
   }
