@@ -29,6 +29,10 @@
 - swagger
   - `http://localhost:3000/api`でAPIからどんなスキーマが帰ってくるのかを確認できます
 
+- supabase
+  - `npx supabase init`
+  - `npx supabase start`
+  - 
 
 - フロントエンド
   - 

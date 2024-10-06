@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update:orval": "npx orval --config ./orval.config.ts"
+    "update:orval": "npx orval --config ./orval.config.ts",
+    "docker:build": "docker build --platform linux/amd64 -t nextjs-frontend .",
+    "confirm:local:docker:build": "docker run -p 3000:3000 nextjs-frontend"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.3",
