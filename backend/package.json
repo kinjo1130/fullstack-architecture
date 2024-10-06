@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "gcr:tag": "docker tag nestjs-backend gcr.io/XXXXXX/nestjs-backend:latest",
+    "gcr:push": " docker push gcr.io/XXXXXX/nestjs-backend:latest",
+    "docker:build": "docker build --platform linux/amd64 -t nestjs-backend .",
+    "docker:build:confirm": "docker run -p 8080:8080 -e DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:54322/postgres?schema=public nestjs-backend"
   },
   "dependencies": {
     "@nestjs/apollo": "^12.2.0",
