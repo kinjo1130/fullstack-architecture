@@ -13,32 +13,24 @@
   - Docker
 
 ### 環境構築
-- バックエンド
-- Docker
-  - `docker compose up`
+それぞれのディレクトリのREADME.mdを見てください
 
-- APIサーバーの起動
-  - `pnpm i`
-  - `pnpm run start:dev`
-    - http://localhost:3000
 
-- prisma
-  - `npx prisma studio`
-  - prisma: http:localhost:5555
+### Deploy方法
+- `cd infra`
+- `terraform init` // 初回のみ
+  - `terraform refresh` // 依存関係を更新したときなど
+- `terraform plan` // Deployの内容の確認
+- `terraform apply`
 
-- swagger
-  - `http://localhost:3000/api`でAPIからどんなスキーマが帰ってくるのかを確認できます
-
-- supabase
-  - `npx supabase init`
-  - `npx supabase start`
-  - 
-
-- フロントエンド
-  - 
 
 
 ### 残っていて、やりたいこと
-- 認証周り
-- DB
+- 認証周りの追加
+- GCRのtagとイメージのpushを自動化(TerraformかMakefileで作るか)
+- Secret Mangerを使って、環境変数をセキュアにする
 
+
+
+### 気になっているところ
+- Docker上にSupabaseがあるので、個人でSupabaseのDBを触るなんてことはないはずかを確かめる

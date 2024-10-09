@@ -9,6 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "start:build": "pnpm run docker:supabase && pnpm run docker:build && pnpm run docker:build:local",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,8 +21,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "gcr:tag": "docker tag nestjs-backend gcr.io/XXXXXX/nestjs-backend:latest",
     "gcr:push": " docker push gcr.io/XXXXXX/nestjs-backend:latest",
-    "docker:build": "docker build --platform linux/amd64 -t nestjs-backend .",
-    "docker:build:confirm": "docker run -p 8080:8080 -e DATABASE_URL=postgresql://postgres:postgres@host.docker.internal:54322/postgres?schema=public nestjs-backend"
+    "docker:build:prod": "docker build --platform linux/amd64 -t nestjs-backend -f Dockerfile .",
+    "docker:build:dev": "docker build --platform linux/amd64 -t nestjs-backend -f Dockerfile.dev .",
+    "docker:run:prod": "docker run -p 8080:8080 nestjs-backend",
+    "docker:run:dev": "docker run -p 8080:8080 -v $(pwd):/app -e DATABASE_URL='postgresql://postgres:postgres@host.docker.internal:54322/postgres?schema=public' nestjs-backend",
+    "docker:supabase": "npx supabase start"
   },
   "dependencies": {
     "@nestjs/apollo": "^12.2.0",

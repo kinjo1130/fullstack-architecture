@@ -37,6 +37,7 @@ COPY --from=builder /app/.env ./.env
 
 # Expose the port Nest.js runs on
 EXPOSE 8080
+# Note: Do not set sensitive environment variables here
 
 # Run Prisma migrations and start the Nest.js application
-CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
+CMD ["/bin/sh", "-c", "npx prisma migrate deploy && npm run start:dev"]
