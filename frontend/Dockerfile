@@ -13,6 +13,8 @@ RUN npm i
 # Copy the rest of the application code
 COPY . .
 
+RUN npm run update:orval
+
 # Build the Next.js application
 RUN npm run build
 
@@ -26,6 +28,7 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 # COPY --from=builder /app/public ./public
+COPY  --from=builder /app/orval ./orval
 
 # Expose the port Next.js runs on
 EXPOSE 3000

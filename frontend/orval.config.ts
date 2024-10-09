@@ -3,7 +3,7 @@ import { defineConfig } from 'orval';
 export default defineConfig({
   api: {
     output: {
-      baseUrl: 'http://localhost:8080',
+      baseUrl: process.env.NODE_ENV === 'development' ?  'http://localhost:8080': `$\{process.env.NEXT_PUBLIC_API_URL}` ,
       mode: 'tags-split',
       target: './orval/api.ts',
       schemas: './orval/schemas',

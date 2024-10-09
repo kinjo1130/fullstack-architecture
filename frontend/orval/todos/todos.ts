@@ -32,7 +32,7 @@ export type todoControllerFindAllResponse = {
 export const getTodoControllerFindAllUrl = () => {
 
 
-  return `http://localhost:8080/todos`
+  return `${process.env.NEXT_PUBLIC_API_URL}/todos`
 }
 
 export const todoControllerFindAll = async ( options?: RequestInit): Promise<todoControllerFindAllResponse> => {
@@ -54,7 +54,7 @@ export const todoControllerFindAll = async ( options?: RequestInit): Promise<tod
 
 
 
-export const getTodoControllerFindAllKey = () => [`http://localhost:8080/todos`] as const;
+export const getTodoControllerFindAllKey = () => [`${process.env.NEXT_PUBLIC_API_URL}/todos`] as const;
 
 export type TodoControllerFindAllQueryResult = NonNullable<Awaited<ReturnType<typeof todoControllerFindAll>>>
 export type TodoControllerFindAllQueryError = Promise<unknown>
@@ -89,7 +89,7 @@ export type todoControllerCreateResponse = {
 export const getTodoControllerCreateUrl = () => {
 
 
-  return `http://localhost:8080/todos/create`
+  return `${process.env.NEXT_PUBLIC_API_URL}/todos/create`
 }
 
 export const todoControllerCreate = async (createTodoDto: CreateTodoDto, options?: RequestInit): Promise<todoControllerCreateResponse> => {
@@ -117,7 +117,7 @@ export const getTodoControllerCreateMutationFetcher = ( options?: RequestInit) =
     return todoControllerCreate(arg, options);
   }
 }
-export const getTodoControllerCreateMutationKey = () => [`http://localhost:8080/todos/create`] as const;
+export const getTodoControllerCreateMutationKey = () => [`${process.env.NEXT_PUBLIC_API_URL}/todos/create`] as const;
 
 export type TodoControllerCreateMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerCreate>>>
 export type TodoControllerCreateMutationError = Promise<unknown>
@@ -152,7 +152,7 @@ export type todoControllerUpdateResponse = {
 export const getTodoControllerUpdateUrl = () => {
 
 
-  return `http://localhost:8080/todos/update`
+  return `${process.env.NEXT_PUBLIC_API_URL}/todos/update`
 }
 
 export const todoControllerUpdate = async (todoDto: TodoDto, options?: RequestInit): Promise<todoControllerUpdateResponse> => {
@@ -180,7 +180,7 @@ export const getTodoControllerUpdateMutationFetcher = ( options?: RequestInit) =
     return todoControllerUpdate(arg, options);
   }
 }
-export const getTodoControllerUpdateMutationKey = () => [`http://localhost:8080/todos/update`] as const;
+export const getTodoControllerUpdateMutationKey = () => [`${process.env.NEXT_PUBLIC_API_URL}/todos/update`] as const;
 
 export type TodoControllerUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerUpdate>>>
 export type TodoControllerUpdateMutationError = Promise<unknown>
@@ -215,7 +215,7 @@ export type todoControllerDeleteResponse = {
 export const getTodoControllerDeleteUrl = () => {
 
 
-  return `http://localhost:8080/todos/delete`
+  return `${process.env.NEXT_PUBLIC_API_URL}/todos/delete`
 }
 
 export const todoControllerDelete = async (todoControllerDeleteBody: number, options?: RequestInit): Promise<todoControllerDeleteResponse> => {
@@ -243,7 +243,7 @@ export const getTodoControllerDeleteMutationFetcher = ( options?: RequestInit) =
     return todoControllerDelete(arg, options);
   }
 }
-export const getTodoControllerDeleteMutationKey = () => [`http://localhost:8080/todos/delete`] as const;
+export const getTodoControllerDeleteMutationKey = () => [`${process.env.NEXT_PUBLIC_API_URL}/todos/delete`] as const;
 
 export type TodoControllerDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerDelete>>>
 export type TodoControllerDeleteMutationError = Promise<unknown>
