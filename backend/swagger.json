@@ -68,6 +68,70 @@
           "todos"
         ]
       }
+    },
+    "/todos/update": {
+      "put": {
+        "operationId": "TodoController_update",
+        "summary": "Todoを更新します",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todoが更新されました",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "todos"
+        ]
+      }
+    },
+    "/todos/delete": {
+      "post": {
+        "operationId": "TodoController_delete",
+        "summary": "Todoを削除します",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todoが削除されました",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "todos"
+        ]
+      }
     }
   },
   "info": {

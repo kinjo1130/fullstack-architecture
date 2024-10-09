@@ -21,7 +21,7 @@ import type {
 export const getAppControllerGetHelloUrl = () => {
 
 
-  return `http://localhost:3000/`
+  return `http://localhost:8080/`
 }
 
 export const appControllerGetHello = async ( options?: RequestInit): Promise<appControllerGetHelloResponse> => {
@@ -43,7 +43,7 @@ export const appControllerGetHello = async ( options?: RequestInit): Promise<app
 
 
 
-export const getAppControllerGetHelloKey = () => [`http://localhost:3000/`] as const;
+export const getAppControllerGetHelloKey = () => [`http://localhost:8080/`] as const;
 
 export type AppControllerGetHelloQueryResult = NonNullable<Awaited<ReturnType<typeof appControllerGetHello>>>
 export type AppControllerGetHelloQueryError = Promise<unknown>

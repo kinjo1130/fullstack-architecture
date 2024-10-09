@@ -21,6 +21,10 @@ export const getTodoControllerFindAllResponseMock = (): TodoDto[] => (Array.from
 
 export const getTodoControllerCreateResponseMock = (overrideResponse: Partial< TodoDto > = {}): TodoDto => ({completed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, id: faker.word.sample(), title: faker.word.sample(), updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
 
+export const getTodoControllerUpdateResponseMock = (overrideResponse: Partial< TodoDto > = {}): TodoDto => ({completed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, id: faker.word.sample(), title: faker.word.sample(), updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
+export const getTodoControllerDeleteResponseMock = (overrideResponse: Partial< TodoDto > = {}): TodoDto => ({completed: faker.datatype.boolean(), createdAt: `${faker.date.past().toISOString().split('.')[0]}Z`, id: faker.word.sample(), title: faker.word.sample(), updatedAt: `${faker.date.past().toISOString().split('.')[0]}Z`, ...overrideResponse})
+
 
 export const getTodoControllerFindAllMockHandler = (overrideResponse?: TodoDto[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<TodoDto[]> | TodoDto[])) => {
   return http.get('*/todos', async (info) => {await delay(1000);
@@ -45,7 +49,33 @@ export const getTodoControllerCreateMockHandler = (overrideResponse?: TodoDto | 
       })
   })
 }
+
+export const getTodoControllerUpdateMockHandler = (overrideResponse?: TodoDto | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<TodoDto> | TodoDto)) => {
+  return http.put('*/todos/update', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getTodoControllerUpdateResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
+
+export const getTodoControllerDeleteMockHandler = (overrideResponse?: TodoDto | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<TodoDto> | TodoDto)) => {
+  return http.post('*/todos/delete', async (info) => {await delay(1000);
+  
+    return new HttpResponse(JSON.stringify(overrideResponse !== undefined 
+            ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse) 
+            : getTodoControllerDeleteResponseMock()),
+      { status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
+  })
+}
 export const getTodosMock = () => [
   getTodoControllerFindAllMockHandler(),
-  getTodoControllerCreateMockHandler()
+  getTodoControllerCreateMockHandler(),
+  getTodoControllerUpdateMockHandler(),
+  getTodoControllerDeleteMockHandler()
 ]

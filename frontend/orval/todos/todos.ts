@@ -32,7 +32,7 @@ export type todoControllerFindAllResponse = {
 export const getTodoControllerFindAllUrl = () => {
 
 
-  return `http://localhost:3000/todos`
+  return `http://localhost:8080/todos`
 }
 
 export const todoControllerFindAll = async ( options?: RequestInit): Promise<todoControllerFindAllResponse> => {
@@ -54,7 +54,7 @@ export const todoControllerFindAll = async ( options?: RequestInit): Promise<tod
 
 
 
-export const getTodoControllerFindAllKey = () => [`http://localhost:3000/todos`] as const;
+export const getTodoControllerFindAllKey = () => [`http://localhost:8080/todos`] as const;
 
 export type TodoControllerFindAllQueryResult = NonNullable<Awaited<ReturnType<typeof todoControllerFindAll>>>
 export type TodoControllerFindAllQueryError = Promise<unknown>
@@ -89,7 +89,7 @@ export type todoControllerCreateResponse = {
 export const getTodoControllerCreateUrl = () => {
 
 
-  return `http://localhost:3000/todos/create`
+  return `http://localhost:8080/todos/create`
 }
 
 export const todoControllerCreate = async (createTodoDto: CreateTodoDto, options?: RequestInit): Promise<todoControllerCreateResponse> => {
@@ -117,7 +117,7 @@ export const getTodoControllerCreateMutationFetcher = ( options?: RequestInit) =
     return todoControllerCreate(arg, options);
   }
 }
-export const getTodoControllerCreateMutationKey = () => [`http://localhost:3000/todos/create`] as const;
+export const getTodoControllerCreateMutationKey = () => [`http://localhost:8080/todos/create`] as const;
 
 export type TodoControllerCreateMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerCreate>>>
 export type TodoControllerCreateMutationError = Promise<unknown>
@@ -133,6 +133,132 @@ export const useTodoControllerCreate = <TError = Promise<unknown>>(
 
   const swrKey = swrOptions?.swrKey ?? getTodoControllerCreateMutationKey();
   const swrFn = getTodoControllerCreateMutationFetcher(fetchOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+/**
+ * @summary Todoを更新します
+ */
+export type todoControllerUpdateResponse = {
+  data: TodoDto;
+  status: number;
+}
+
+export const getTodoControllerUpdateUrl = () => {
+
+
+  return `http://localhost:8080/todos/update`
+}
+
+export const todoControllerUpdate = async (todoDto: TodoDto, options?: RequestInit): Promise<todoControllerUpdateResponse> => {
+  
+  const res = await fetch(getTodoControllerUpdateUrl(),
+  {      
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      todoDto,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getTodoControllerUpdateMutationFetcher = ( options?: RequestInit) => {
+  return (_: Key, { arg }: { arg: TodoDto }): Promise<todoControllerUpdateResponse> => {
+    return todoControllerUpdate(arg, options);
+  }
+}
+export const getTodoControllerUpdateMutationKey = () => [`http://localhost:8080/todos/update`] as const;
+
+export type TodoControllerUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerUpdate>>>
+export type TodoControllerUpdateMutationError = Promise<unknown>
+
+/**
+ * @summary Todoを更新します
+ */
+export const useTodoControllerUpdate = <TError = Promise<unknown>>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof todoControllerUpdate>>, TError, Key, TodoDto, Awaited<ReturnType<typeof todoControllerUpdate>>> & { swrKey?: string }, fetch?: RequestInit}
+) => {
+
+  const {swr: swrOptions, fetch: fetchOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getTodoControllerUpdateMutationKey();
+  const swrFn = getTodoControllerUpdateMutationFetcher(fetchOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+/**
+ * @summary Todoを削除します
+ */
+export type todoControllerDeleteResponse = {
+  data: TodoDto;
+  status: number;
+}
+
+export const getTodoControllerDeleteUrl = () => {
+
+
+  return `http://localhost:8080/todos/delete`
+}
+
+export const todoControllerDelete = async (todoControllerDeleteBody: number, options?: RequestInit): Promise<todoControllerDeleteResponse> => {
+  
+  const res = await fetch(getTodoControllerDeleteUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      todoControllerDeleteBody,)
+  }
+
+  )
+  const data = await res.json()
+
+  return { status: res.status, data }
+}
+
+
+
+
+export const getTodoControllerDeleteMutationFetcher = ( options?: RequestInit) => {
+  return (_: Key, { arg }: { arg: number }): Promise<todoControllerDeleteResponse> => {
+    return todoControllerDelete(arg, options);
+  }
+}
+export const getTodoControllerDeleteMutationKey = () => [`http://localhost:8080/todos/delete`] as const;
+
+export type TodoControllerDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof todoControllerDelete>>>
+export type TodoControllerDeleteMutationError = Promise<unknown>
+
+/**
+ * @summary Todoを削除します
+ */
+export const useTodoControllerDelete = <TError = Promise<unknown>>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof todoControllerDelete>>, TError, Key, number, Awaited<ReturnType<typeof todoControllerDelete>>> & { swrKey?: string }, fetch?: RequestInit}
+) => {
+
+  const {swr: swrOptions, fetch: fetchOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getTodoControllerDeleteMutationKey();
+  const swrFn = getTodoControllerDeleteMutationFetcher(fetchOptions);
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

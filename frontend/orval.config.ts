@@ -3,7 +3,7 @@ import { defineConfig } from 'orval';
 export default defineConfig({
   api: {
     output: {
-      baseUrl: process.env.NODE_ENV === "development" ? 'http://localhost:8080': process.env.NEXT_PUBLIC_API_URL,
+      baseUrl: 'http://localhost:8080',
       mode: 'tags-split',
       target: './orval/api.ts',
       schemas: './orval/schemas',
@@ -12,7 +12,7 @@ export default defineConfig({
       mock: true,
     },
     input: {
-      target: '../swagger.json',
+      target: '../backend/swagger.json',
     },
   },
 });

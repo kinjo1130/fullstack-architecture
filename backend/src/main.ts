@@ -21,7 +21,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("api", app, document);
   // 生成したswagger.jsonを表示するためのエンドポイントを追加
-  fs.writeFileSync("../swagger.json", JSON.stringify(document, undefined, 2));
+  const swaggerPath = "/app/swagger.json";
+  fs.writeFileSync(swaggerPath, JSON.stringify(document, null, 2));
+  console.log(`Swagger JSON file written to: ${swaggerPath}`);
 
   const port = Number(process.env.PORT) || 8080;
   await app.listen(port, "0.0.0.0");

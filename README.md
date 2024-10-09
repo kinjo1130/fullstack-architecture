@@ -3,14 +3,18 @@
 ## 技術構成
 - バックエンド
   - Nest.js
-  - prisma
-  - swagger
+  - Prisma
+  - Swagger
+  - Supabase
 - フロントエンド
   - Next.js
-  - orval
+  - Orval
+  - 
 - インフラ
   - Cloud Run
   - Docker
+  - GCR
+  - Terraform
 
 ### 環境構築
 それぞれのディレクトリのREADME.mdを見てください
@@ -29,6 +33,9 @@
 - 認証周りの追加
 - GCRのtagとイメージのpushを自動化(TerraformかMakefileで作るか)
 - Secret Mangerを使って、環境変数をセキュアにする
+- Testの追加
+  - フロントエンド
+  - バックエンド(e2eは入っている)
 
 
 
