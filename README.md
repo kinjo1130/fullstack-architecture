@@ -1,4 +1,5 @@
 # フルスタックを目指したTodoアプリケーション
+[![Image from Gyazo](https://i.gyazo.com/34233d2e94e228a7fa039f3ef95f13c8.png)](https://gyazo.com/34233d2e94e228a7fa039f3ef95f13c8)
 
 ## 技術構成
 - バックエンド
