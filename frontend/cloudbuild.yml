@@ -1,0 +1,24 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '--platform', 'linux/amd64', '-t', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nextjs-frontend:$COMMIT_SHA', '.']
+    dir: 'frontend'
+  # Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nextjs-frontend:$COMMIT_SHA']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+    - 'run'
+    - 'deploy'
+    - 'nextjs-frontend'
+    - '--image'
+    - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nextjs-frontend:$COMMIT_SHA'
+    - '--region'
+    - '${_REGION}'
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nextjs-frontend:$COMMIT_SHA'
+substitutions:
+  _REGION: ${var.region}
+  _REPO_NAME: my-app-repo

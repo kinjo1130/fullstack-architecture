@@ -1,0 +1,41 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "--platform",
+        "linux/amd64",
+        "-t",
+        "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nestjs-backend:$COMMIT_SHA",
+        "-f",
+        "Dockerfile",
+        ".",
+      ]
+    dir: "backend"
+  # Push the container image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nestjs-backend:$COMMIT_SHA",
+      ]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "nestjs-backend"
+      - "--image"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nestjs-backend:$COMMIT_SHA"
+      - "--region"
+      - "${_REGION}"
+      - "--set-env-vars"
+      - "DATABASE_URL=${_DATABASE_URL}"
+images:
+  - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/nestjs-backend:$COMMIT_SHA"
+substitutions:
+  _REGION: ${var.region}
+  _REPO_NAME: my-app-repo
+  _DATABASE_URL: ${var.database_url}

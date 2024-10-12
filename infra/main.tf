@@ -1,5 +1,3 @@
-# main.tf
-
 # Provider configuration
 provider "google" {
   project = var.project_id
@@ -7,16 +5,63 @@ provider "google" {
 }
 
 # Enable required APIs
-resource "google_project_service" "run_api" {
-  service = "run.googleapis.com"
+resource "google_project_service" "required_apis" {
+  for_each = toset([
+    "run.googleapis.com",
+    "iam.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "artifactregistry.googleapis.com"
+  ])
+  service = each.key
+  disable_on_destroy = false
 }
 
-resource "google_project_service" "iam_api" {
-  service = "iam.googleapis.com"
+# Create Artifact Registry repository
+resource "google_artifact_registry_repository" "my_repo" {
+  location      = var.region
+  repository_id = "my-app-repo"
+  description   = "Docker repository for my application"
+  format        = "DOCKER"
+
+  depends_on = [google_project_service.required_apis]
 }
 
-resource "google_project_service" "cloudbuild_api" {
-  service = "cloudbuild.googleapis.com"
+# Cloud Build trigger for frontend
+resource "google_cloudbuild_trigger" "frontend_trigger" {
+  name        = "frontend-build-trigger"
+  description = "Trigger for building and pushing frontend Docker image"
+
+  github {
+    owner = "your-github-username"
+    name  = "your-repo-name"
+    push {
+      branch = "^main$"
+    }
+  }
+
+  included_files = ["frontend/**"]
+  filename = "frontend/cloudbuild.yaml"
+
+  depends_on = [google_project_service.required_apis]
+}
+
+# Cloud Build trigger for backend
+resource "google_cloudbuild_trigger" "backend_trigger" {
+  name        = "backend-build-trigger"
+  description = "Trigger for building and pushing backend Docker image"
+
+  github {
+    owner = "your-github-username"
+    name  = "your-repo-name"
+    push {
+      branch = "^main$"
+    }
+  }
+
+  included_files = ["backend/**"]
+  filename = "backend/cloudbuild.yaml"
+
+  depends_on = [google_project_service.required_apis]
 }
 
 # Cloud Run service for backend (Nest.js)
@@ -27,10 +72,10 @@ resource "google_cloud_run_service" "backend" {
   template {
     spec {
       containers {
-        image = var.backend_image
+        image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.my_repo.repository_id}/nestjs-backend:latest"
         env {
-            name = "DATABASE_URL"
-            value = var.database_url
+          name  = "DATABASE_URL"
+          value = var.database_url
         }
       }
     }
@@ -42,7 +87,7 @@ resource "google_cloud_run_service" "backend" {
   }
   autogenerate_revision_name = true
 
-  depends_on = [google_project_service.run_api]
+  depends_on = [google_project_service.required_apis, google_cloudbuild_trigger.backend_trigger]
 }
 
 # Cloud Run service for frontend (Next.js)
@@ -53,10 +98,10 @@ resource "google_cloud_run_service" "frontend" {
   template {
     spec {
       containers {
-        image = var.frontend_image
+        image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.my_repo.repository_id}/nextjs-frontend:latest"
         env {
           name  = "API_URL"
-          value = var.api_url
+          value = google_cloud_run_service.backend.status[0].url
         }
         env {
           name  = "NEXT_PUBLIC_API_URL"
@@ -72,7 +117,7 @@ resource "google_cloud_run_service" "frontend" {
   }
   autogenerate_revision_name = true
 
-  depends_on = [google_project_service.run_api]
+  depends_on = [google_project_service.required_apis, google_cloudbuild_trigger.frontend_trigger]
 }
 
 # IAM policy to make the services public
