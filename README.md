@@ -22,6 +22,10 @@
 
 
 ### Deploy方法
+- root配下
+- `make grr-login`
+- `make all`
+  - これでGCRにDockerイメージのtagとpushが完了
 - `cd infra`
 - `terraform init` // 初回のみ
   - `terraform refresh` // 依存関係を更新したときなど
