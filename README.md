@@ -23,7 +23,7 @@
 
 ### Deploy方法
 - root配下
-- `make grr-login`
+- `make gcr-login`
 - `make all`
   - これでGCRにDockerイメージのtagとpushが完了
 - `cd infra`
@@ -36,7 +36,6 @@
 
 ### 残っていて、やりたいこと
 - 認証周りの追加
-- GCRのtagとイメージのpushを自動化(TerraformかMakefileで作るか)
 - Secret Mangerを使って、環境変数をセキュアにする
 - Testの追加
   - フロントエンド
